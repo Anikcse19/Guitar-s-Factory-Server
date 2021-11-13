@@ -61,7 +61,7 @@ async function run() {
         app.put("/statusUpdate/:id", async (req, res) => {
             const id = req.params.id
             const newStatus = req.body
-            const filter = { _id: id }
+            const filter = ({ _id: ObjectId(req.params.id) })
             const options = { upsert: true }
             const updateStatus = {
                 $set: {
