@@ -58,16 +58,18 @@ async function run() {
 
         })
         // Receive Orders
-        app.put("/statusUpdate/:id", (req, res) => {
-            // const filter = { _id: ObjectId(req.params.id) };
-            console.log(req.params.id);
-            // const result = await purchaserCollection.updateOne(filter, {
-            //     $set: {
-            //         status: req.body.status,
-            //     },
-            // });
-            // res.send(result);
-            // console.log(result);
+        app.put("/statusUpdate/:id", async (req, res) => {
+            const id = req.params.id
+            const newStatus = req.body
+            const filter = { _id: id }
+            const options = { upsert: true }
+            const updateStatus = {
+                $set: {
+                    status: newStatus[0]
+                }
+            }
+            const result = await purchaserCollection.updateOne(filter, updateStatus, options)
+            res.json(result)
         });
         // find admin 
         app.get('/users/:email', async (req, res) => {
